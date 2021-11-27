@@ -1,29 +1,28 @@
-import React, { useEffect, useContext, useState } from 'react';
-import StoreContext from '../contexts/storeContext';
+import React, { useEffect } from 'react';
 import { loadBugs }from '../store/bugs';
+import { connect } from 'react-redux';
 
-function Bugs() {
-  const store = useContext(StoreContext);
-  const [ bugs, setBugs ] = useState([]);
-
-
+function Bugs(props) {
   useEffect(() => {
-    const unsubscribe = store.subscribe(() => {
-      const bugsInStore = store.getState().entities.bugs.list;
-      if (bugs !== bugsInStore) 
-        setBugs(bugsInStore);
-    });
-
-    store.dispatch(loadBugs());
-
-    return unsubscribe;
-  }, [store]);
+    props.loadBugs()
+  },[]);
 
   return ( 
-    <ul>{bugs.map(bug => 
-      <li key={bugs.id}>{bug.description}</li>
+    <ul>{props.bugs.map(bug => 
+      <li key={bug.id}>{bug.description}</li>
     )}</ul>
    );
 }
 
-export default Bugs;
+//bugs: state.entities.bugs.list
+const mapStateToProps = state => ({
+  bugs: state.entities.bugs.list
+});
+
+const mapDispatchToProps = dispatch => ({
+  loadBugs: () => dispatch(loadBugs())
+});
+
+//Container component that wraps the Presentation component (Bugs)
+
+export default connect(mapStateToProps, mapDispatchToProps)(Bugs);

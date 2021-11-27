@@ -1,14 +1,14 @@
 import Bugs from './components/Bugs';
-import StoreContext from './contexts/storeContext';
 import configureStore from './store/configureStore';
+import { Provider } from 'react-redux';
 
 const store = configureStore();
 
 function App() {
   return (
-    <StoreContext.Provider value={store}>
+    <Provider store={store}>
       <Bugs />
-    </StoreContext.Provider>
+    </Provider>
   );
 }
 
