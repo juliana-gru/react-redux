@@ -2,13 +2,13 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { loadBugs, getUnresolvedBugs, resolveBug } from '../store/bugs';
 
-const BugsList = (props) => {
+const BugsList = () => {
   const dispatch = useDispatch();
   const bugs = useSelector(getUnresolvedBugs);
 
   useEffect(() => {
     dispatch(loadBugs());
-  }, [props]);
+  }, []);
 
   return (
     <ul>{bugs.map(bug =>       
