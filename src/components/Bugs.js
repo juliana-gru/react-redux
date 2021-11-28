@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { loadBugs }from '../store/bugs';
+import { loadBugs, resolveBug, getUnresolvedBugs }from '../store/bugs';
 import { connect } from 'react-redux';
 
 function Bugs(props) {
@@ -9,18 +9,21 @@ function Bugs(props) {
 
   return ( 
     <ul>{props.bugs.map(bug => 
-      <li key={bug.id}>{bug.description}</li>
+      <li key={bug.id}>{bug.description}
+        <button onClick={() => props.resolveBug(bug.id)}> Resolve </button>
+      </li>      
     )}</ul>
    );
 }
 
 //bugs: state.entities.bugs.list
 const mapStateToProps = state => ({
-  bugs: state.entities.bugs.list
+  bugs: getUnresolvedBugs(state),
 });
 
 const mapDispatchToProps = dispatch => ({
-  loadBugs: () => dispatch(loadBugs())
+  loadBugs: () => dispatch(loadBugs()),
+  resolveBug: id => dispatch(resolveBug(id))
 });
 
 //Container component that wraps the Presentation component (Bugs)
